@@ -1,15 +1,13 @@
 import * as THREE from "../node_modules/three/build/three.module.js";
-
-import * as myModules from './modules.js';
-var Bus = myModules.Bus;
-var Car = myModules.Car;
+import {Bus} from "./Bus.js"
+import {Car} from "./Car.js"
 
 //Scene
 const scene = new THREE.Scene();
 
 
 // Add a car
-const playerCar = myModules.Car();
+const playerCar = Bus();
 scene.add(playerCar);
 
 //Setup lights
