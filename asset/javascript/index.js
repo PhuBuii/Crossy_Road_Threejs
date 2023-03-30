@@ -1,14 +1,15 @@
 import * as THREE from "../node_modules/three/build/three.module.js";
+
+import * as myModules from './modules.js';
+var Bus = myModules.Bus;
+var Car = myModules.Car;
+
 //Scene
 const scene = new THREE.Scene();
 
-//Color Vehicle
-const vehicleColors = [
-  0xa52523, 0xbdb638, 0x78b14b, 0x00ffff, 0xffcc99, 0xcc99ff, 0x001100,
-  0x000077, 0xff0000, 0x660033, 0x660066, 0x990066,
-];
+
 // Add a car
-const playerCar = Bus();
+const playerCar = myModules.Car();
 scene.add(playerCar);
 
 //Setup lights
@@ -43,3 +44,11 @@ renderer.render(scene, camera);
 document.body.appendChild(renderer.domElement);
 //Animated;
 animate();
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  playerCar.rotation.z -= 0.01;
+
+  renderer.render(scene, camera);
+}
