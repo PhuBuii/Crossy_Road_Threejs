@@ -14,19 +14,20 @@ export function pickRandom(array) {
 export function Wheel(y, z) {
     const wheel = new THREE.Group();
     const tire = new THREE.Mesh(
-        new THREE.BoxBufferGeometry(12, 10, 12),
+        new THREE.TorusGeometry(4.5, 3.5),
         new THREE.MeshLambertMaterial({ color: 0x333333 })
     );
     tire.position.z = z;
     tire.position.y = y;
+    tire.rotateX(Math.PI / 2);    
     wheel.add(tire);
 
     const center = new THREE.Mesh(
-        new THREE.BoxBufferGeometry(5, 11, 5),
+        new THREE.SphereGeometry(3.5),
         new THREE.MeshLambertMaterial({ color: 0xffffff })
     );
     center.position.z = z;
-    center.position.y = y;
+    center.position.y = y;    
     wheel.add(center);
     return wheel;
 }
@@ -34,10 +35,10 @@ export function Wheel(y, z) {
 export function Create_Wheel(x, y, z) {
     const wheel = new THREE.Group();
 
-    const left_wheel = Wheel(y, z);
+    const left_wheel = Wheel(y + 2, z);
     wheel.add(left_wheel);
 
-    const right_wheel = Wheel(-y, z);
+    const right_wheel = Wheel(-y - 2, z);
     wheel.add(right_wheel);
 
     wheel.position.x = x;
