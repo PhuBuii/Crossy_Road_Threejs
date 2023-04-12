@@ -60,7 +60,7 @@ export function Truck() {
     const backWheel = Create_Wheel(-18, 11, 6);
     car.add(backWheel);
 
-    const frontWheel = Create_Wheel(18, 11, 6);
+    const frontWheel = Create_Wheel(22, 11, 6);
     car.add(frontWheel);
 
     const plane = new THREE.Mesh(
