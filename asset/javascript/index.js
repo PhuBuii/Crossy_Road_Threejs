@@ -1,6 +1,7 @@
 import * as THREE from "../node_modules/three/build/three.module.js";
 import {Bus} from "./Bus.js"
 import {Car} from "./Car.js"
+import {Truck} from "./Truck.js"
 
 
 //Scene
@@ -8,7 +9,7 @@ const scene = new THREE.Scene();
 
 
 // Add a car
-const playerCar =Bus();
+const playerCar = Truck();
 scene.add(playerCar);
 
 //Setup lights
