@@ -1,100 +1,77 @@
 import * as THREE from "../node_modules/three/build/three.module.js";
-import {pickRandom, vehicleColors, Create_Wheel, Wheel} from "./modules.js"
+import { Texture, vechicleColors, zoom } from "./modules.js";
+import { Wheel } from "./wheel.js";
 
+const truckFrontTexture = new Texture(30, 30, [{ x: 15, y: 0, w: 10, h: 30 }]);
+const truckRightSideTexture = new Texture(25, 30, [
+  { x: 0, y: 15, w: 10, h: 10 },
+]);
+const truckLeftSideTexture = new Texture(25, 30, [
+  { x: 0, y: 5, w: 10, h: 10 },
+]);
 
-//Create Car window
-function getCarFrontTexture(color) {
-    const canvas = document.createElement("canvas");
-    canvas.width = 64;
-    canvas.height = 32;
-    const context = canvas.getContext("2d");
-
-    color = "#" + color.toString(16);    
-    context.fillStyle = color;
-    context.fillRect(0, 0, 64, 32);
-
-    context.fillStyle = "#FFFFFF";
-    context.fillRect(4,4,56,14);
-
-    context.fillStyle = "#666666";
-    context.fillRect(7, 7, 50, 8);
-
-    return new THREE.CanvasTexture(canvas);
-}
-
-function getCarSideTexture(color) {
-    const canvas = document.createElement("canvas");
-    canvas.width = 128;
-    canvas.height = 32;
-    const context = canvas.getContext("2d");
-    color = "#" + color.toString(16);    
-    
-    context.fillStyle = color;
-    context.fillRect(0, 0, 128, 32);
-
-    context.fillStyle = "#FFFFFF";
-    context.fillRect(32, 5, 72, 16);
-    
-    context.fillStyle = "#666666";
-    context.fillRect(38, 8, 56, 10);
-
-    return new THREE.CanvasTexture(canvas);
-}
-
-//Truck
 export function Truck() {
+  const truck = new THREE.Group();
+  const color =
+    vechicleColors[Math.floor(Math.random() * vechicleColors.length)];
 
-    const car_color = pickRandom(vehicleColors);
+  const base = new THREE.Mesh(
+    new THREE.BoxGeometry(100 * zoom, 25 * zoom, 5 * zoom),
+    new THREE.MeshLambertMaterial({ color: 0xb4c6fc, flatShading: true })
+  );
+  base.position.z = 10 * zoom;
+  truck.add(base);
 
-    const carFrontTexture = getCarFrontTexture(car_color);
-    carFrontTexture.center = new THREE.Vector2(0.5, 0.5);
-    carFrontTexture.rotation = Math.PI / 2;    
+  const cargo = new THREE.Mesh(
+    new THREE.BoxGeometry(75 * zoom, 35 * zoom, 40 * zoom),
+    new THREE.MeshPhongMaterial({ color: 0xb4c6fc, flatShading: true })
+  );
+  cargo.position.x = 15 * zoom;
+  cargo.position.z = 30 * zoom;
+  cargo.castShadow = true;
+  cargo.receiveShadow = true;
+  truck.add(cargo);
 
-    const carRightSideTexture = getCarSideTexture(car_color);
-    carRightSideTexture.flipY = false;
-    const carLeftSideTexture = getCarSideTexture(car_color);
-    carLeftSideTexture.flipY = true;
+  const cabin = new THREE.Mesh(
+    new THREE.BoxGeometry(25 * zoom, 30 * zoom, 30 * zoom),
+    [
+      new THREE.MeshPhongMaterial({ color, flatShading: true }), // back
+      new THREE.MeshPhongMaterial({
+        color,
+        flatShading: true,
+        map: truckFrontTexture,
+      }),
+      new THREE.MeshPhongMaterial({
+        color,
+        flatShading: true,
+        map: truckRightSideTexture,
+      }),
+      new THREE.MeshPhongMaterial({
+        color,
+        flatShading: true,
+        map: truckLeftSideTexture,
+      }),
+      new THREE.MeshPhongMaterial({ color, flatShading: true }), // top
+      new THREE.MeshPhongMaterial({ color, flatShading: true }), // bottom
+    ]
+  );
+  cabin.position.x = -40 * zoom;
+  cabin.position.z = 20 * zoom;
+  cabin.castShadow = true;
+  cabin.receiveShadow = true;
+  truck.add(cabin);
 
-    const car = new THREE.Group();
+  const frontWheel = new Wheel();
+  frontWheel.position.x = -38 * zoom;
+  truck.add(frontWheel);
 
-    const backWheel = Create_Wheel(-18, 11, 6);
-    car.add(backWheel);
+  const middleWheel = new Wheel();
+  middleWheel.position.x = -10 * zoom;
+  truck.add(middleWheel);
 
-    const frontWheel = Create_Wheel(22, 11, 6);
-    car.add(frontWheel);
+  const backWheel = new Wheel();
+  backWheel.position.x = 30 * zoom;
+  truck.add(backWheel);
 
-    const plane = new THREE.Mesh(
-        new THREE.BoxBufferGeometry(75, 30, 8),
-        new THREE.MeshLambertMaterial({ color: "#808080" })
-    );
-    plane.position.z = 10;
-    car.add(plane);
-       
-
-    const cabin = new THREE.Mesh(
-        new THREE.BoxBufferGeometry(22, 24, 20),              
-        // new THREE.MeshLambertMaterial({ color: car_color })    
-        [
-            new THREE.MeshLambertMaterial({ map: carFrontTexture }),
-            new THREE.MeshLambertMaterial({ color: car_color }),
-            new THREE.MeshLambertMaterial({ map: carRightSideTexture }),
-            new THREE.MeshLambertMaterial({ map: carLeftSideTexture }),
-            new THREE.MeshLambertMaterial({ color: car_color }),
-            new THREE.MeshLambertMaterial({ color: car_color }),
-        ]   
-    );    
-    cabin.position.z = 20;
-    cabin.position.x = 25;    
-    car.add(cabin);
-
-    const box = new THREE.Mesh(
-        new THREE.BoxBufferGeometry(50, 28, 35),
-        new THREE.MeshLambertMaterial({ color: "#FFFFFF" })        
-    );
-    box.position.z = 25;
-    box.position.x = -10;
-    car.add(box);
-   
-
-    return car;
+  return truck;
 }
