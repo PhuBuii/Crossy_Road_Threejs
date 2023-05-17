@@ -1,6 +1,7 @@
 import * as THREE from "../node_modules/three/build/three.module.js";
 import { Car } from "./car.js";
 import { Truck } from "./truck.js";
+import { Bus } from "./bus.js";
 
 const scene = new THREE.Scene();
 
@@ -45,7 +46,7 @@ backLight.position.set(200, 200, 50);
 backLight.castShadow = true;
 scene.add(backLight);
 
-const vechicle = new Car();
+const vechicle = new Bus();
 scene.add(vechicle);
 
 const renderer = new THREE.WebGLRenderer({

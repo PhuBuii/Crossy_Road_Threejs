@@ -1,6 +1,7 @@
 import * as THREE from "../node_modules/three/build/three.module.js";
 import { Car } from "./car.js";
 import { Truck } from "./truck.js";
+import { Bus } from "./bus.js";
 import { zoom, positionWidth, boardWidth, columns } from "./modules.js";
 import { Chicken } from "./player.js";
 import { Grass, Road } from "./objects.js";
@@ -47,8 +48,9 @@ let stepStartTimestamp;
 
 const generateLanes = () =>
   [
-    -15, -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2,
-    3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+    -20, -19, -18, -17, -16, -15, -14, -13, -12, -11, -10, -9, -8, -7, -6, -5,
+    -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+    17, 18, 19, 20,
   ]
     .map((index) => {
       const lane = new Lane(index);
@@ -97,7 +99,7 @@ backLight.position.set(200, 200, 50);
 backLight.castShadow = true;
 scene.add(backLight);
 
-const laneTypes = ["car", "truck", "forest"];
+const laneTypes = ["bus", "car", "truck", "forest"];
 const laneSpeeds = [2, 2.5, 3];
 
 const threeHeights = [20, 45, 60];
@@ -207,6 +209,29 @@ function Lane(index) {
         occupiedPositions.add(position);
         vechicle.position.x =
           (position * positionWidth * 2 + positionWidth / 2) * zoom -
+          (boardWidth * zoom) / 2;
+        if (!this.direction) vechicle.rotation.z = Math.PI;
+        this.mesh.add(vechicle);
+        return vechicle;
+      });
+
+      this.speed = laneSpeeds[Math.floor(Math.random() * laneSpeeds.length)];
+      break;
+    }
+    case "bus": {
+      this.mesh = new Road();
+      this.direction = Math.random() >= 0.5;
+
+      const occupiedPositions = new Set();
+      this.vechicles = [1, 2].map(() => {
+        const vechicle = new Bus();
+        let position;
+        do {
+          position = Math.floor((Math.random() * columns) / 3);
+        } while (occupiedPositions.has(position));
+        occupiedPositions.add(position);
+        vechicle.position.x =
+          (position * positionWidth * 3 + positionWidth / 2) * zoom -
           (boardWidth * zoom) / 2;
         if (!this.direction) vechicle.rotation.z = Math.PI;
         this.mesh.add(vechicle);
@@ -344,7 +369,7 @@ function animate(timestamp) {
 
   // Animate cars and trucks moving on the lane
   lanes.forEach((lane) => {
-    if (lane.type === "car" || lane.type === "truck") {
+    if (lane.type === "car" || lane.type === "truck" || lane.type === "bus") {
       const aBitBeforeTheBeginingOfLane =
         (-boardWidth * zoom) / 2 - positionWidth * 2 * zoom;
       const aBitAfterTheEndOFLane =
@@ -452,11 +477,14 @@ function animate(timestamp) {
   // Hit test
   if (
     lanes[currentLane].type === "car" ||
+    lanes[currentLane].type === "bus" ||
     lanes[currentLane].type === "truck"
   ) {
     const chickenMinX = chicken.position.x - (chickenSize * zoom) / 2;
     const chickenMaxX = chicken.position.x + (chickenSize * zoom) / 2;
-    const vechicleLength = { car: 60, truck: 105 }[lanes[currentLane].type];
+    const vechicleLength = { bus: 80, car: 60, truck: 105 }[
+      lanes[currentLane].type
+    ];
     lanes[currentLane].vechicles.forEach((vechicle) => {
       const carMinX = vechicle.position.x - (vechicleLength * zoom) / 2;
       const carMaxX = vechicle.position.x + (vechicleLength * zoom) / 2;
