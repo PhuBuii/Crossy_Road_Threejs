@@ -1,7 +1,9 @@
 import * as THREE from "../node_modules/three/build/three.module.js";
 import { Car } from "./car.js";
 import { Truck } from "./truck.js";
-import { zoom } from "./modules.js";
+import { zoom, positionWidth, boardWidth, columns } from "./modules.js";
+import { Chicken } from "./player.js";
+import { Grass, Road } from "./objects.js";
 
 const counterDOM = document.getElementById("counter");
 const endDOM = document.getElementById("end");
@@ -31,10 +33,6 @@ camera.position.x = initialCameraPositionX;
 camera.position.z = distance;
 
 const chickenSize = 15;
-
-const positionWidth = 42;
-const columns = 17;
-const boardWidth = positionWidth * columns;
 
 const stepTime = 200; // Miliseconds it takes for the chicken to take a step forward, backward, left or right
 
@@ -161,79 +159,6 @@ function Three() {
   three.add(crown);
 
   return three;
-}
-
-function Chicken() {
-  const chicken = new THREE.Group();
-
-  const body = new THREE.Mesh(
-    new THREE.BoxGeometry(chickenSize * zoom, chickenSize * zoom, 20 * zoom),
-    new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true })
-  );
-  body.position.z = 10 * zoom;
-  body.castShadow = true;
-  body.receiveShadow = true;
-  chicken.add(body);
-
-  const rowel = new THREE.Mesh(
-    new THREE.BoxGeometry(2 * zoom, 4 * zoom, 2 * zoom),
-    new THREE.MeshLambertMaterial({ color: 0xf0619a, flatShading: true })
-  );
-  rowel.position.z = 21 * zoom;
-  rowel.castShadow = true;
-  rowel.receiveShadow = false;
-  chicken.add(rowel);
-
-  return chicken;
-}
-
-function Road() {
-  const road = new THREE.Group();
-
-  const createSection = (color) =>
-    new THREE.Mesh(
-      new THREE.PlaneGeometry(boardWidth * zoom, positionWidth * zoom),
-      new THREE.MeshPhongMaterial({ color })
-    );
-
-  const middle = createSection(0x454a59);
-  middle.receiveShadow = true;
-  road.add(middle);
-
-  const left = createSection(0x393d49);
-  left.position.x = -boardWidth * zoom;
-  road.add(left);
-
-  const right = createSection(0x393d49);
-  right.position.x = boardWidth * zoom;
-  road.add(right);
-
-  return road;
-}
-
-function Grass() {
-  const grass = new THREE.Group();
-
-  const createSection = (color) =>
-    new THREE.Mesh(
-      new THREE.BoxGeometry(boardWidth * zoom, positionWidth * zoom, 3 * zoom),
-      new THREE.MeshPhongMaterial({ color })
-    );
-
-  const middle = createSection(0xbaf455);
-  middle.receiveShadow = true;
-  grass.add(middle);
-
-  const left = createSection(0x99c846);
-  left.position.x = -boardWidth * zoom;
-  grass.add(left);
-
-  const right = createSection(0x99c846);
-  right.position.x = boardWidth * zoom;
-  grass.add(right);
-
-  grass.position.z = 1.5 * zoom;
-  return grass;
 }
 
 function Lane(index) {
@@ -463,7 +388,8 @@ function animate(timestamp) {
         break;
       }
       case "backward": {
-        positionY = currentLane * positionWidth * zoom - moveDeltaDistance;
+        const positionY =
+          currentLane * positionWidth * zoom - moveDeltaDistance;
         camera.position.y = initialCameraPositionY + positionY;
         dirLight.position.y = initialDirLightPositionY + positionY;
         chicken.position.y = positionY;

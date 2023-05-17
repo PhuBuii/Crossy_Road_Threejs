@@ -14,3 +14,6 @@ export function Texture(width, height, rects) {
 }
 export const vechicleColors = [0xa52523, 0xbdb638, 0x78b14b];
 export const zoom = 2;
+export const positionWidth = 42;
+export const columns = 17;
+export const boardWidth = positionWidth * columns;
