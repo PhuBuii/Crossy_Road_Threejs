@@ -1,7 +1,7 @@
 import * as THREE from "../node_modules/three/build/three.module.js";
-import { Car } from "./car.js";
-import { Truck } from "./truck.js";
-import { Bus } from "./bus.js";
+import { Car } from "./vechicles/car.js";
+import { Truck } from "./vechicles/truck.js";
+import { Bus } from "./vechicles/bus.js";
 
 const scene = new THREE.Scene();
 

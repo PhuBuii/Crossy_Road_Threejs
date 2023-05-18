@@ -1,5 +1,5 @@
-import * as THREE from "../node_modules/three/build/three.module.js";
-import { Texture, vechicleColors, zoom } from "./modules.js";
+import * as THREE from "../../node_modules/three/build/three.module.js";
+import { Texture, vechicleColors, zoom } from "../modules/modules.js";
 import { Wheel } from "./wheel.js";
 
 const truckFrontTexture = new Texture(30, 30, [{ x: 15, y: 0, w: 10, h: 30 }]);

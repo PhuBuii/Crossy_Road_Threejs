@@ -1,5 +1,5 @@
-import * as THREE from "../node_modules/three/build/three.module.js";
-import { zoom } from "./modules.js";
+import * as THREE from "../../node_modules/three/build/three.module.js";
+import { zoom } from "../modules/modules.js";
 
 export function Wheel() {
   const wheel = new THREE.Mesh(

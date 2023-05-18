@@ -1,10 +1,10 @@
 import * as THREE from "../node_modules/three/build/three.module.js";
-import { Car } from "./car.js";
-import { Truck } from "./truck.js";
-import { Bus } from "./bus.js";
-import { zoom, positionWidth, boardWidth, columns } from "./modules.js";
-import { Chicken } from "./player.js";
-import { Grass, Road } from "./objects.js";
+import { Car } from "./vechicles/car.js";
+import { Truck } from "./vechicles/truck.js";
+import { Bus } from "./vechicles/bus.js";
+import { zoom, positionWidth, boardWidth, columns } from "./modules/modules.js";
+import { Chicken } from "./players/player.js";
+import { Grass, Road } from "./modules/objects.js";
 
 const counterDOM = document.getElementById("counter");
 const endDOM = document.getElementById("end");

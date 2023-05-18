@@ -1,5 +1,5 @@
-import * as THREE from "../node_modules/three/build/three.module.js";
-import { Texture, vechicleColors, zoom } from "./modules.js";
+import * as THREE from "../../node_modules/three/build/three.module.js";
+import { Texture, vechicleColors, zoom } from "../modules/modules.js";
 import { Wheel } from "./wheel.js";
 
 const busFrontTexture = new Texture(45, 70, [{ x: 10, y: 5, w: 30, h: 60 }]);
@@ -61,7 +61,14 @@ export function Bus() {
 
   bus.castShadow = true;
   bus.receiveShadow = false;
+  //top bus
+  const topbus = new THREE.Mesh(
+    new THREE.BoxGeometry(60 * zoom, 20 * zoom, 3 * zoom),
+    new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true })
+  );
+  topbus.position.z = 30 * zoom;
 
   bus.add(main);
+  bus.add(topbus);
   return bus;
 }

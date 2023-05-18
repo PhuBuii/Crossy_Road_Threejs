@@ -1,5 +1,6 @@
-import * as THREE from "../node_modules/three/build/three.module.js";
-import { zoom } from "./modules.js";
+import * as THREE from "../../node_modules/three/build/three.module.js";
+import { zoom } from "../modules/modules.js";
+
 const chickenSize = 15;
 export function Chicken() {
   const chicken = new THREE.Group();

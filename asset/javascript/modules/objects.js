@@ -1,5 +1,5 @@
-import * as THREE from "../node_modules/three/build/three.module.js";
-import { zoom, positionWidth, boardWidth } from "./modules.js";
+import * as THREE from "../../node_modules/three/build/three.module.js";
+import { zoom, positionWidth, boardWidth } from "../modules/modules.js";
 
 export function Road() {
   const road = new THREE.Group();
