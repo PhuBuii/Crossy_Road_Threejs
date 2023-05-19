@@ -3,10 +3,14 @@ import { Car } from "./vechicles/car.js";
 import { Truck } from "./vechicles/truck.js";
 import { Bus } from "./vechicles/bus.js";
 import { zoom, positionWidth, boardWidth, columns } from "./modules/modules.js";
-import { Chicken } from "./players/player.js";
+import { Chicken, Egg } from "./players/player.js";
 import { Grass, Road } from "./modules/objects.js";
-
+const turn = 0; //0 foward 1 backward 2 left 3 right
+//Còn task highscore và score after reset
+//Task đổi nhân vật
+//Task xoay nhân vật
 const counterDOM = document.getElementById("counter");
+const highscore = document.getElementById("highscore");
 const endDOM = document.getElementById("end");
 
 const scene = new THREE.Scene();
@@ -35,7 +39,7 @@ camera.position.z = distance;
 
 const chickenSize = 15;
 
-const stepTime = 200; // Miliseconds it takes for the chicken to take a step forward, backward, left or right
+const stepTime = 200; // Miliseconds it takes for the player to take a step forward, backward, left or right
 
 let lanes;
 let currentLane;
@@ -68,8 +72,8 @@ const addLane = () => {
   lanes.push(lane);
 };
 
-const chicken = new Chicken();
-scene.add(chicken);
+const player = new Chicken();
+scene.add(player);
 
 const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
 scene.add(hemiLight);
@@ -79,7 +83,7 @@ const initialDirLightPositionY = -100;
 const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
 dirLight.position.set(initialDirLightPositionX, initialDirLightPositionY, 200);
 dirLight.castShadow = true;
-dirLight.target = chicken;
+dirLight.target = player;
 scene.add(dirLight);
 
 dirLight.shadow.mapSize.width = 2048;
@@ -116,8 +120,8 @@ const initaliseValues = () => {
   moves = [];
   stepStartTimestamp;
 
-  chicken.position.x = 0;
-  chicken.position.y = 0;
+  player.position.x = 0;
+  player.position.y = 0;
 
   camera.position.y = initialCameraPositionY;
   camera.position.x = initialCameraPositionX;
@@ -273,13 +277,13 @@ document.querySelector("#retry").addEventListener("click", () => {
   endDOM.style.visibility = "hidden";
 });
 
-document
-  .getElementById("forward")
-  .addEventListener("click", () => move("forward"));
+document.getElementById("forward").addEventListener("click", () => {
+  move("forward");
+});
 
-document
-  .getElementById("backward")
-  .addEventListener("click", () => move("backward"));
+document.getElementById("backward").addEventListener("click", () => {
+  move("backward");
+});
 
 document.getElementById("left").addEventListener("click", () => move("left"));
 
@@ -304,14 +308,18 @@ window.addEventListener("keydown", (event) => {
 function move(direction) {
   const finalPositions = moves.reduce(
     (position, move) => {
-      if (move === "forward")
+      if (move === "forward") {
         return { lane: position.lane + 1, column: position.column };
-      if (move === "backward")
+      }
+      if (move === "backward") {
         return { lane: position.lane - 1, column: position.column };
-      if (move === "left")
+      }
+      if (move === "left") {
         return { lane: position.lane, column: position.column - 1 };
-      if (move === "right")
+      }
+      if (move === "right") {
         return { lane: position.lane, column: position.column + 1 };
+      }
     },
     { lane: currentLane, column: currentColumn }
   );
@@ -407,9 +415,9 @@ function animate(timestamp) {
           currentLane * positionWidth * zoom + moveDeltaDistance;
         camera.position.y = initialCameraPositionY + positionY;
         dirLight.position.y = initialDirLightPositionY + positionY;
-        chicken.position.y = positionY; // initial chicken position is 0
+        player.position.y = positionY; // initial player position is 0
 
-        chicken.position.z = jumpDeltaDistance;
+        player.position.z = jumpDeltaDistance;
         break;
       }
       case "backward": {
@@ -417,9 +425,9 @@ function animate(timestamp) {
           currentLane * positionWidth * zoom - moveDeltaDistance;
         camera.position.y = initialCameraPositionY + positionY;
         dirLight.position.y = initialDirLightPositionY + positionY;
-        chicken.position.y = positionY;
+        player.position.y = positionY;
 
-        chicken.position.z = jumpDeltaDistance;
+        player.position.z = jumpDeltaDistance;
         break;
       }
       case "left": {
@@ -429,8 +437,8 @@ function animate(timestamp) {
           moveDeltaDistance;
         camera.position.x = initialCameraPositionX + positionX;
         dirLight.position.x = initialDirLightPositionX + positionX;
-        chicken.position.x = positionX; // initial chicken position is 0
-        chicken.position.z = jumpDeltaDistance;
+        player.position.x = positionX; // initial player position is 0
+        player.position.z = jumpDeltaDistance;
         break;
       }
       case "right": {
@@ -440,9 +448,9 @@ function animate(timestamp) {
           moveDeltaDistance;
         camera.position.x = initialCameraPositionX + positionX;
         dirLight.position.x = initialDirLightPositionX + positionX;
-        chicken.position.x = positionX;
+        player.position.x = positionX;
 
-        chicken.position.z = jumpDeltaDistance;
+        player.position.z = jumpDeltaDistance;
         break;
       }
     }
@@ -480,8 +488,8 @@ function animate(timestamp) {
     lanes[currentLane].type === "bus" ||
     lanes[currentLane].type === "truck"
   ) {
-    const chickenMinX = chicken.position.x - (chickenSize * zoom) / 2;
-    const chickenMaxX = chicken.position.x + (chickenSize * zoom) / 2;
+    const chickenMinX = player.position.x - (chickenSize * zoom) / 2;
+    const chickenMaxX = player.position.x + (chickenSize * zoom) / 2;
     const vechicleLength = { bus: 80, car: 60, truck: 105 }[
       lanes[currentLane].type
     ];

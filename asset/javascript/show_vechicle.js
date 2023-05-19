@@ -2,10 +2,14 @@ import * as THREE from "../node_modules/three/build/three.module.js";
 import { Car } from "./vechicles/car.js";
 import { Truck } from "./vechicles/truck.js";
 import { Bus } from "./vechicles/bus.js";
+import { Egg, Chicken } from "./players/player.js";
 
 const scene = new THREE.Scene();
 
-const distance = 500;
+const vechicle = new Chicken();
+scene.add(vechicle);
+
+const distance = 100;
 const camera = new THREE.OrthographicCamera(
   window.innerWidth / -2,
   window.innerWidth / 2,
@@ -46,9 +50,6 @@ backLight.position.set(200, 200, 50);
 backLight.castShadow = true;
 scene.add(backLight);
 
-const vechicle = new Bus();
-scene.add(vechicle);
-
 const renderer = new THREE.WebGLRenderer({
   alpha: true,
   antialias: true,
@@ -58,9 +59,10 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+vechicle.rotation.z = -10;
 function animate() {
   requestAnimationFrame(animate);
-  vechicle.rotation.z += 0.01;
+  //vechicle.rotation.z += 0.01;
   renderer.render(scene, camera);
 }
 animate();
