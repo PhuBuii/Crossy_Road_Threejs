@@ -280,6 +280,8 @@ document.querySelector("#retry").addEventListener("click", () => {
   endDOM.style.visibility = "hidden";
   controllersDOM.style.visibility = "visible";
   window.addEventListener("keydown", handleKeyDown);
+  document.addEventListener("touchstart", handleTouchStart, { passive: false });
+  document.addEventListener("touchmove", handleTouchMove, { passive: false });
   counterDOM.innerHTML = 0;
 });
 
@@ -620,6 +622,12 @@ function animate(timestamp) {
         endDOM.style.visibility = "visible";
         controllersDOM.style.visibility = "hidden";
         window.removeEventListener("keydown", handleKeyDown);
+        document.removeEventListener("touchstart", handleTouchStart, {
+          passive: false,
+        });
+        document.removeEventListener("touchmove", handleTouchMove, {
+          passive: false,
+        });
       }
     });
   }
