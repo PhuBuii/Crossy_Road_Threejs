@@ -5,17 +5,20 @@ import { Bus } from "./vechicles/bus.js";
 import { zoom, positionWidth, boardWidth, columns } from "./modules/modules.js";
 import { Chicken, Egg } from "./players/player.js";
 import { Grass, Road } from "./modules/objects.js";
-const turn = 0; //0 foward 1 backward 2 left 3 right
+let turn = 0; //0 foward 1 backward 2 left 3 right
+
 //Còn task highscore và score after reset
 //Task đổi nhân vật
 //Task xoay nhân vật
 const counterDOM = document.getElementById("counter");
-const highscore = document.getElementById("highscore");
+const highscoreDOM = document.getElementById("highscore");
 const endDOM = document.getElementById("end");
+const controllersDOM = document.getElementById("controlls");
 
 const scene = new THREE.Scene();
 
 const distance = 500;
+let highscore = 0;
 const camera = new THREE.OrthographicCamera(
   window.innerWidth / -2,
   window.innerWidth / 2,
@@ -275,36 +278,77 @@ document.querySelector("#retry").addEventListener("click", () => {
   lanes.forEach((lane) => scene.remove(lane.mesh));
   initaliseValues();
   endDOM.style.visibility = "hidden";
+  controllersDOM.style.visibility = "visible";
+  window.addEventListener("keydown", handleKeyDown);
 });
 
 document.getElementById("forward").addEventListener("click", () => {
   move("forward");
+  if (turn != 0) {
+    player.rotation.z = 0;
+  }
+  turn = 0;
 });
 
 document.getElementById("backward").addEventListener("click", () => {
   move("backward");
+  if (turn != 1) {
+    player.rotation.z = 3.1;
+  }
+  turn = 1;
 });
 
-document.getElementById("left").addEventListener("click", () => move("left"));
+document.getElementById("left").addEventListener("click", () => {
+  move("left");
+  if (turn != 2) {
+    player.rotation.z = 1.55;
+  }
+  turn = 2;
+});
 
-document.getElementById("right").addEventListener("click", () => move("right"));
+document.getElementById("right").addEventListener("click", () => {
+  move("right");
+  if (turn != 3) {
+    player.rotation.z = -1.55;
+  }
+  turn = 3;
+});
 
-window.addEventListener("keydown", (event) => {
+// Lưu trữ hàm xử lý sự kiện vào một biến
+const handleKeyDown = (event) => {
   if (event.keyCode == "38") {
     // up arrow
     move("forward");
+    if (turn != 0) {
+      player.rotation.z = 0;
+    }
+    turn = 0;
   } else if (event.keyCode == "40") {
     // down arrow
     move("backward");
+    if (turn != 1) {
+      player.rotation.z = 3.1;
+    }
+    turn = 1;
   } else if (event.keyCode == "37") {
     // left arrow
     move("left");
+    if (turn != 2) {
+      player.rotation.z = 1.55;
+    }
+    turn = 2;
   } else if (event.keyCode == "39") {
     // right arrow
     move("right");
+    if (turn != 3) {
+      player.rotation.z = -1.55;
+    }
+    turn = 3;
   }
-});
 
+  event.preventDefault(); // Ngăn chặn hành vi mặc định của sự kiện
+};
+window.addEventListener("keydown", handleKeyDown);
 function move(direction) {
   const finalPositions = moves.reduce(
     (position, move) => {
@@ -370,7 +414,10 @@ function move(direction) {
 
 function animate(timestamp) {
   requestAnimationFrame(animate);
-
+  if (highscore < currentLane) {
+    highscore = currentLane;
+    highscoreDOM.innerHTML = highscore;
+  }
   if (!previousTimestamp) previousTimestamp = timestamp;
   const delta = timestamp - previousTimestamp;
   previousTimestamp = timestamp;
@@ -476,6 +523,7 @@ function animate(timestamp) {
           break;
         }
       }
+
       moves.shift();
       // If more steps are to be taken then restart counter otherwise stop stepping
       stepStartTimestamp = moves.length === 0 ? null : timestamp;
@@ -498,6 +546,8 @@ function animate(timestamp) {
       const carMaxX = vechicle.position.x + (vechicleLength * zoom) / 2;
       if (chickenMaxX > carMinX && chickenMinX < carMaxX) {
         endDOM.style.visibility = "visible";
+        controllersDOM.style.visibility = "hidden";
+        window.removeEventListener("keydown", handleKeyDown);
       }
     });
   }
