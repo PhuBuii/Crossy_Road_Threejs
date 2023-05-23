@@ -314,6 +314,65 @@ document.getElementById("right").addEventListener("click", () => {
   }
   turn = 3;
 });
+let xStart = null;
+let yStart = null;
+
+function handleTouchStart(event) {
+  xStart = event.touches[0].clientX;
+  yStart = event.touches[0].clientY;
+}
+
+function handleTouchMove(event) {
+  if (!xStart || !yStart) {
+    return;
+  }
+
+  const xEnd = event.touches[0].clientX;
+  const yEnd = event.touches[0].clientY;
+
+  const xDiff = xEnd - xStart;
+  const yDiff = yEnd - yStart;
+
+  if (Math.abs(xDiff) > Math.abs(yDiff)) {
+    if (xDiff > 0) {
+      // Vuốt sang phải
+      move("right");
+      if (turn != 3) {
+        player.rotation.z = -1.55;
+      }
+      turn = 3;
+    } else {
+      // Vuốt sang trái
+      move("left");
+      if (turn != 2) {
+        player.rotation.z = 1.55;
+      }
+      turn = 2;
+    }
+  } else {
+    if (yDiff > 0) {
+      // Vuốt xuống
+      move("backward");
+      if (turn != 1) {
+        player.rotation.z = 3.1;
+      }
+      turn = 1;
+    } else {
+      // Vuốt lên
+      move("forward");
+      if (turn != 0) {
+        player.rotation.z = 0;
+      }
+      turn = 0;
+    }
+  }
+
+  xStart = null;
+  yStart = null;
+}
+
+document.addEventListener("touchstart", handleTouchStart, { passive: false });
+document.addEventListener("touchmove", handleTouchMove, { passive: false });
 
 // Lưu trữ hàm xử lý sự kiện vào một biến
 const handleKeyDown = (event) => {
@@ -350,6 +409,7 @@ const handleKeyDown = (event) => {
   event.preventDefault(); // Ngăn chặn hành vi mặc định của sự kiện
 };
 window.addEventListener("keydown", handleKeyDown);
+
 function move(direction) {
   const finalPositions = moves.reduce(
     (position, move) => {
