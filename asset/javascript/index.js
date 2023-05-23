@@ -75,7 +75,7 @@ const addLane = () => {
   lanes.push(lane);
 };
 
-const player = new Chicken();
+let player = new Egg();
 scene.add(player);
 
 const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
@@ -280,6 +280,7 @@ document.querySelector("#retry").addEventListener("click", () => {
   endDOM.style.visibility = "hidden";
   controllersDOM.style.visibility = "visible";
   window.addEventListener("keydown", handleKeyDown);
+  counterDOM.innerHTML = 0;
 });
 
 document.getElementById("forward").addEventListener("click", () => {
@@ -414,6 +415,17 @@ function move(direction) {
 
 function animate(timestamp) {
   requestAnimationFrame(animate);
+  if (currentLane === 10) {
+    const playerPosition = player.position.clone(); // Lưu trữ vị trí hiện tại của player
+
+    scene.remove(player);
+
+    player = new Chicken();
+    player.position.copy(playerPosition); // Đặt vị trí mới cho player dựa trên vị trí đã lưu trữ
+
+    scene.add(player);
+  }
+
   if (highscore < currentLane) {
     highscore = currentLane;
     highscoreDOM.innerHTML = highscore;

@@ -5,7 +5,6 @@ const chickenSize = 15;
 const eggSize = 15;
 export function Egg() {
   const egg = new THREE.Group();
-
   const body = new THREE.Mesh(
     new THREE.BoxGeometry(eggSize * zoom, eggSize * zoom, 20 * zoom),
     new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true })
