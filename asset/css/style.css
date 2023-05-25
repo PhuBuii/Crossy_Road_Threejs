@@ -12,6 +12,7 @@ button {
   border: none;
   box-shadow: 3px 5px 0px 0px rgba(0, 0, 0, 0.75);
 }
+
 #counter {
   position: absolute;
   top: 20px;
@@ -22,8 +23,9 @@ button {
   min-width: 100%;
   min-height: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
+  bottom: 100px;
   visibility: hidden;
 }
 #end button {
@@ -62,13 +64,4 @@ button {
   display: flex;
   top: 20px;
   left: 20px;
-}
-@media only screen and (max-width: 600px) {
-  .highscore,
-  #counter {
-    position: absolute;
-    font-size: 15px;
-    top: 20px;
-    right: 20px;
-  }
 }

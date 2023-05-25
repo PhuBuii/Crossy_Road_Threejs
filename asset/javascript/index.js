@@ -3,7 +3,7 @@ import { Car } from "./vechicles/car.js";
 import { Truck } from "./vechicles/truck.js";
 import { Bus } from "./vechicles/bus.js";
 import { zoom, positionWidth, boardWidth, columns } from "./modules/modules.js";
-import { Chicken, Egg } from "./players/player.js";
+import { Chicken, Egg, Crash_Chicken } from "./players/player.js";
 import { Grass, Road } from "./modules/objects.js";
 let turn = 0; //0 foward 1 backward 2 left 3 right
 
@@ -280,9 +280,13 @@ document.querySelector("#retry").addEventListener("click", () => {
   endDOM.style.visibility = "hidden";
   controllersDOM.style.visibility = "visible";
   window.addEventListener("keydown", handleKeyDown);
+  window.addEventListener("keyup", handleKeyUp);
   document.addEventListener("touchstart", handleTouchStart, { passive: false });
   document.addEventListener("touchmove", handleTouchMove, { passive: false });
   counterDOM.innerHTML = 0;
+  scene.remove(player);
+  player = new Chicken();
+  scene.add(player);
 });
 
 document.getElementById("forward").addEventListener("click", () => {
@@ -376,41 +380,51 @@ function handleTouchMove(event) {
 document.addEventListener("touchstart", handleTouchStart, { passive: false });
 document.addEventListener("touchmove", handleTouchMove, { passive: false });
 
-// Lưu trữ hàm xử lý sự kiện vào một biến
+let keyState = {};
 const handleKeyDown = (event) => {
-  if (event.keyCode == "38") {
-    // up arrow
-    move("forward");
-    if (turn != 0) {
-      player.rotation.z = 0;
+  keyState[event.keyCode] = false;
+};
+
+const handleKeyUp = (event) => {
+  if (keyState[event.keyCode] == false) {
+    if (event.keyCode == "38") {
+      // up arrow
+      move("forward");
+      if (turn != 0) {
+        player.rotation.z = 0;
+      }
+      turn = 0;
+    } else if (event.keyCode == "40") {
+      // down arrow
+      move("backward");
+      if (turn != 1) {
+        player.rotation.z = 3.1;
+      }
+      turn = 1;
+    } else if (event.keyCode == "37") {
+      // left arrow
+      move("left");
+      if (turn != 2) {
+        player.rotation.z = 1.55;
+      }
+      turn = 2;
+    } else if (event.keyCode == "39") {
+      // right arrow
+      move("right");
+      if (turn != 3) {
+        player.rotation.z = -1.55;
+      }
+      turn = 3;
     }
-    turn = 0;
-  } else if (event.keyCode == "40") {
-    // down arrow
-    move("backward");
-    if (turn != 1) {
-      player.rotation.z = 3.1;
-    }
-    turn = 1;
-  } else if (event.keyCode == "37") {
-    // left arrow
-    move("left");
-    if (turn != 2) {
-      player.rotation.z = 1.55;
-    }
-    turn = 2;
-  } else if (event.keyCode == "39") {
-    // right arrow
-    move("right");
-    if (turn != 3) {
-      player.rotation.z = -1.55;
-    }
-    turn = 3;
   }
+  keyState[event.keyCode] = true;
 
   event.preventDefault(); // Ngăn chặn hành vi mặc định của sự kiện
 };
+
+// Đăng ký sự kiện keydown và keyup
 window.addEventListener("keydown", handleKeyDown);
+window.addEventListener("keyup", handleKeyUp);
 
 function move(direction) {
   const finalPositions = moves.reduce(
@@ -622,12 +636,21 @@ function animate(timestamp) {
         endDOM.style.visibility = "visible";
         controllersDOM.style.visibility = "hidden";
         window.removeEventListener("keydown", handleKeyDown);
+        window.removeEventListener("keyup", handleKeyUp);
         document.removeEventListener("touchstart", handleTouchStart, {
           passive: false,
         });
         document.removeEventListener("touchmove", handleTouchMove, {
           passive: false,
         });
+        const playerPosition = player.position.clone(); // Lưu trữ vị trí hiện tại của player
+
+        scene.remove(player);
+
+        player = new Crash_Chicken();
+        player.position.copy(playerPosition); // Đặt vị trí mới cho player dựa trên vị trí đã lưu trữ
+        player.position.z = -8 * zoom;
+        scene.add(player);
       }
     });
   }
