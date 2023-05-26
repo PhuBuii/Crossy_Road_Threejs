@@ -8,6 +8,17 @@ import { Grass, Road } from "./objects.js";
 
 const counterDOM = document.getElementById("counter");
 const endDOM = document.getElementById("end");
+const checkbox = document.getElementById("checkbox1")
+const controlBtns = document.getElementById("controlls")
+
+checkbox.addEventListener('click',  (e) => {
+  if (e.target.checked){    
+    controlBtns.style.display = "none";    
+  }
+  else{
+    controlBtns.style.display = "";
+  }
+})
 
 const scene = new THREE.Scene();
 
@@ -286,6 +297,9 @@ document.getElementById("left").addEventListener("click", () => move("left"));
 document.getElementById("right").addEventListener("click", () => move("right"));
 
 window.addEventListener("keydown", (event) => {
+  window.addEventListener("keyup", (e) => {
+    console.log(e);
+  });
   if (event.keyCode == "38") {
     // up arrow
     move("forward");
