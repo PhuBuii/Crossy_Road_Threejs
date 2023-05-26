@@ -65,3 +65,66 @@ button {
   top: 20px;
   left: 20px;
 }
+
+input,
+label {
+  bottom: 20px;
+  left: 20px;
+}
+.checkbox-label {
+  position: absolute;
+  font-size: 40%;
+  margin-top: 20px;
+  margin-left: 30px;
+}
+
+input[type="checkbox"] {
+  /* Hide the default checkbox appearance */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  outline: none;
+  border: none;
+  padding: 0;
+  margin: 5px;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  z-index: 1;
+}
+
+input[type="checkbox"]::before {
+  /* Create a custom checkbox shape */
+  content: "";
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%; /* Make the border round */
+  border: 2px solid #000; /* Border color */
+  background-color: #fff; /* Background color */
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+input[type="checkbox"]:checked::after {
+  /* Add a check icon after the checkbox is checked */
+  content: "\2713"; /* Unicode character for checkmark */
+  font-size: 14px;
+  font-weight: 900;
+  color: #000; /* Icon color */
+  position: absolute;
+  left: 4px;
+}
+
+@media only screen and (max-width: 600px) {
+  input,
+  label {
+    bottom: 125px;
+    left: 20px;
+  }
+  .highscore,
+  #counter {
+    font-size: 15px;
+  }
+}

@@ -13,7 +13,16 @@ let turn = 0; //0 foward 1 backward 2 left 3 right
 const counterDOM = document.getElementById("counter");
 const highscoreDOM = document.getElementById("highscore");
 const endDOM = document.getElementById("end");
-const controllersDOM = document.getElementById("controlls");
+const checkbox = document.getElementById("checkbox1");
+const controlBtns = document.getElementById("controlls");
+
+checkbox.addEventListener("click", (e) => {
+  if (e.target.checked) {
+    controlBtns.style.display = "none";
+  } else {
+    controlBtns.style.display = "";
+  }
+});
 
 const scene = new THREE.Scene();
 
@@ -278,7 +287,7 @@ document.querySelector("#retry").addEventListener("click", () => {
   lanes.forEach((lane) => scene.remove(lane.mesh));
   initaliseValues();
   endDOM.style.visibility = "hidden";
-  controllersDOM.style.visibility = "visible";
+  controlBtns.style.visibility = "visible";
   window.addEventListener("keydown", handleKeyDown);
   window.addEventListener("keyup", handleKeyUp);
   document.addEventListener("touchstart", handleTouchStart, { passive: false });
@@ -634,7 +643,7 @@ function animate(timestamp) {
       const carMaxX = vechicle.position.x + (vechicleLength * zoom) / 2;
       if (chickenMaxX > carMinX && chickenMinX < carMaxX) {
         endDOM.style.visibility = "visible";
-        controllersDOM.style.visibility = "hidden";
+        controlBtns.style.visibility = "hidden";
         window.removeEventListener("keydown", handleKeyDown);
         window.removeEventListener("keyup", handleKeyUp);
         document.removeEventListener("touchstart", handleTouchStart, {
