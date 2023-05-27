@@ -49,8 +49,18 @@ export function Grass() {
   grass.position.z = 1.5 * zoom;
   return grass;
 }
+
 export function Coin() {
   const coin = new THREE.Group();
+  const coinSize = 5;
+  const body = new THREE.Mesh(
+    new THREE.CylinderGeometry(coinSize * zoom, coinSize * zoom, 2 * zoom, 32),
+    new THREE.MeshPhongMaterial({ color: 0xffff00, flatShading: true })
+  );
+  body.position.z = 1 * zoom;
+  body.castShadow = true;
+  body.receiveShadow = true;
+  coin.add(body);
 
   return coin;
 }

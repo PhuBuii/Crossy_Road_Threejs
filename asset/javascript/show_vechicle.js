@@ -1,4 +1,5 @@
 import * as THREE from "../node_modules/three/build/three.module.js";
+import { Coin, Grass, Road, Tree } from "./modules/objects.js";
 import { Car } from "./vechicles/car.js";
 import { Truck } from "./vechicles/truck.js";
 import { Bus } from "./vechicles/bus.js";
@@ -6,7 +7,7 @@ import { Egg, Chicken, Crash_Chicken } from "./players/player.js";
 
 const scene = new THREE.Scene();
 
-const vechicle = new Crash_Chicken();
+const vechicle = new Tree();
 scene.add(vechicle);
 
 const distance = 100;

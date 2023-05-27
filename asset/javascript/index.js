@@ -4,7 +4,7 @@ import { Truck } from "./vechicles/truck.js";
 import { Bus } from "./vechicles/bus.js";
 import { zoom, positionWidth, boardWidth, columns } from "./modules/modules.js";
 import { Chicken, Egg, Crash_Chicken } from "./players/player.js";
-import { Grass, Road } from "./modules/objects.js";
+import { Grass, Road, Coin } from "./modules/objects.js";
 let turn = 0; //0 foward 1 backward 2 left 3 right
 
 //Còn task highscore và score after reset
@@ -15,7 +15,8 @@ const highscoreDOM = document.getElementById("highscore");
 const endDOM = document.getElementById("end");
 const checkbox = document.getElementById("checkbox1");
 const controlBtns = document.getElementById("controlls");
-
+const coinDOM = document.getElementById("coin");
+let coin_counter = 0;
 checkbox.addEventListener("click", (e) => {
   if (e.target.checked) {
     controlBtns.style.display = "none";
@@ -115,10 +116,10 @@ backLight.position.set(200, 200, 50);
 backLight.castShadow = true;
 scene.add(backLight);
 
-const laneTypes = ["bus", "car", "truck", "forest"];
+const laneTypes = ["bus", "car", "truck", "forest", "coin"];
 const laneSpeeds = [2, 2.5, 3];
 
-const threeHeights = [20, 45, 60];
+const treeHeights = [20, 45, 60];
 
 const initaliseValues = () => {
   lanes = generateLanes();
@@ -153,8 +154,8 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-function Three() {
-  const three = new THREE.Group();
+function Tree() {
+  const tree = new THREE.Group();
 
   const trunk = new THREE.Mesh(
     new THREE.BoxGeometry(15 * zoom, 15 * zoom, 20 * zoom),
@@ -163,9 +164,9 @@ function Three() {
   trunk.position.z = 10 * zoom;
   trunk.castShadow = true;
   trunk.receiveShadow = true;
-  three.add(trunk);
+  tree.add(trunk);
 
-  const height = threeHeights[Math.floor(Math.random() * threeHeights.length)];
+  const height = treeHeights[Math.floor(Math.random() * treeHeights.length)];
 
   const crown = new THREE.Mesh(
     new THREE.BoxGeometry(30 * zoom, 30 * zoom, height * zoom),
@@ -174,9 +175,9 @@ function Three() {
   crown.position.z = (height / 2 + 20) * zoom;
   crown.castShadow = true;
   crown.receiveShadow = false;
-  three.add(crown);
+  tree.add(crown);
 
-  return three;
+  return tree;
 }
 
 function Lane(index) {
@@ -192,12 +193,32 @@ function Lane(index) {
       this.mesh = new Grass();
       break;
     }
+    case "coin": {
+      this.mesh = new Grass();
+
+      this.occupiedPositions = new Set();
+      this.threes = [1].map(() => {
+        const three = new Coin();
+        let position;
+        do {
+          position = Math.floor(Math.random() * columns);
+        } while (this.occupiedPositions.has(position));
+        this.occupiedPositions.add(position);
+        three.position.x =
+          (position * positionWidth + positionWidth / 2) * zoom -
+          (boardWidth * zoom) / 2;
+        this.mesh.add(three);
+        three.position.z = 8 * zoom;
+        return three;
+      });
+      break;
+    }
     case "forest": {
       this.mesh = new Grass();
 
       this.occupiedPositions = new Set();
       this.threes = [1, 2, 3, 4].map(() => {
-        const three = new Three();
+        const three = new Tree();
         let position;
         do {
           position = Math.floor(Math.random() * columns);
@@ -558,6 +579,11 @@ function animate(timestamp) {
         }
       });
     }
+    if (lane.type == "coin") {
+      lane.threes.forEach((vechicle) => {
+        vechicle.rotation.z += 0.1;
+      });
+    }
   });
 
   if (startMoving) {
@@ -656,6 +682,7 @@ function animate(timestamp) {
     const vechicleLength = { bus: 80, car: 60, truck: 105 }[
       lanes[currentLane].type
     ];
+
     lanes[currentLane].vechicles.forEach((vechicle) => {
       const carMinX = vechicle.position.x - (vechicleLength * zoom) / 2;
       const carMaxX = vechicle.position.x + (vechicleLength * zoom) / 2;
@@ -680,7 +707,25 @@ function animate(timestamp) {
         scene.add(player);
       }
     });
+  } else if (lanes[currentLane].type === "coin") {
+    const chickenMinX = player.position.x - (chickenSize * zoom) / 2;
+    const chickenMaxX = player.position.x + (chickenSize * zoom) / 2;
+
+    lanes[currentLane].threes.forEach((coin, index) => {
+      const coinMinX = coin.position.x - (5 * zoom) / 2;
+      const coinMaxX = coin.position.x + (5 * zoom) / 2;
+
+      if (chickenMaxX > coinMinX && chickenMinX < coinMaxX) {
+        coin_counter += 1;
+        coinDOM.innerHTML = coin_counter;
+
+        // Remove the coin object from the scene
+        lanes[currentLane].threes.splice(index, 1);
+        scene.remove(coin);
+      }
+    });
   }
+
   renderer.render(scene, camera);
 }
 
