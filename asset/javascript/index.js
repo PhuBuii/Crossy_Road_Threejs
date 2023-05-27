@@ -721,7 +721,9 @@ function animate(timestamp) {
 
         // Remove the coin object from the scene
         lanes[currentLane].threes.splice(index, 1);
-        scene.remove(coin);
+        // scene.remove(coin);
+        let parent = coin.parent;
+        parent.remove(coin);
       }
     });
   }
