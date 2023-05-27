@@ -425,6 +425,24 @@ const handleKeyUp = (event) => {
       }
       turn = 3;
     }
+    if (event.key == "R" || event.key == "r") {
+      lanes.forEach((lane) => scene.remove(lane.mesh));
+      initaliseValues();
+      endDOM.style.visibility = "hidden";
+      controlBtns.style.visibility = "visible";
+      window.addEventListener("keydown", handleKeyDown);
+      window.addEventListener("keyup", handleKeyUp);
+      document.addEventListener("touchstart", handleTouchStart, {
+        passive: false,
+      });
+      document.addEventListener("touchmove", handleTouchMove, {
+        passive: false,
+      });
+      counterDOM.innerHTML = 0;
+      scene.remove(player);
+      player = new Chicken();
+      scene.add(player);
+    }
   }
   keyState[event.keyCode] = true;
 

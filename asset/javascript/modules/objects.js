@@ -49,3 +49,8 @@ export function Grass() {
   grass.position.z = 1.5 * zoom;
   return grass;
 }
+export function Coin() {
+  const coin = new THREE.Group();
+
+  return coin;
+}
