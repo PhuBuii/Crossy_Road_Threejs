@@ -70,6 +70,8 @@ button {
   position: absolute;
   display: flex;
   font-size: 20px;
+  height: 20px;
+  width: 20px;
   top: 70px;
   left: 20px;
 }
@@ -134,5 +136,8 @@ input[type="checkbox"]:checked::after {
   .highscore,
   #counter {
     font-size: 15px;
+  }
+  .coin {
+    font-size: 10px;
   }
 }
