@@ -1,13 +1,16 @@
 import * as THREE from "../node_modules/three/build/three.module.js";
-import { Coin, Grass, Road, Tree } from "./modules/objects.js";
+// import { Coin, Grass, Road, Tree } from "./modules/objects.js";
 import { Car } from "./vechicles/car.js";
 import { Truck } from "./vechicles/truck.js";
+import { Taxi } from "./vechicles/taxi.js";
 import { Bus } from "./vechicles/bus.js";
+import { Ambulance } from "./vechicles/ambulance.js";
 import { Egg, Chicken, Crash_Chicken } from "./players/player.js";
 
 const scene = new THREE.Scene();
 
-const vechicle = new Tree();
+const vechicle = new Ambulance();
+console.log(vechicle)
 scene.add(vechicle);
 
 const distance = 100;

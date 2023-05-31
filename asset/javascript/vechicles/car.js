@@ -67,6 +67,10 @@ export function Car() {
   const backWheel = new Wheel();
   backWheel.position.x = 18 * zoom;
   car.add(backWheel);
+  
+  const sign = new THREE.Mesh(
+    
+  )
 
   car.castShadow = true;
   car.receiveShadow = false;
