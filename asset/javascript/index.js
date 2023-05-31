@@ -777,7 +777,7 @@ function animate(timestamp) {
         lanes[currentLane].threes.splice(index, 1);
         // scene.remove(coin);
         let parent = coin.parent;
-        parent.remove(coin)
+        parent.remove(coin);
       }
     });
   }
