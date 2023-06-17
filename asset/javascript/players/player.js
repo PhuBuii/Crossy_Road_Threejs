@@ -5,9 +5,12 @@ const chickenSize = 15;
 const eggSize = 15;
 export function Egg() {
   const egg = new THREE.Group();
+
+  const textureLoader = new THREE.TextureLoader();
+  const texture = textureLoader.load("../../../asset/egg.webp"); // Đường dẫn tới tệp texture
   const body = new THREE.Mesh(
     new THREE.BoxGeometry(eggSize * zoom, eggSize * zoom, 20 * zoom),
-    new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true })
+    new THREE.MeshPhongMaterial({ map: texture, flatShading: true })
   );
   body.position.z = 10 * zoom;
   body.castShadow = true;
