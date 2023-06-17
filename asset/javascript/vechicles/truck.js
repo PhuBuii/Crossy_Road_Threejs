@@ -14,7 +14,11 @@ export function Truck() {
   const truck = new THREE.Group();
   const color =
     vechicleColors[Math.floor(Math.random() * vechicleColors.length)];
-
+  const textureLoader = new THREE.TextureLoader();
+  const texture_left = textureLoader.load("../../../asset/COCACOLA.png");
+  const texture_right = textureLoader.load(
+    "../../../asset/COCACOLA_UPSIDEDOWN.png"
+  );
   const base = new THREE.Mesh(
     new THREE.BoxGeometry(100 * zoom, 25 * zoom, 5 * zoom),
     new THREE.MeshLambertMaterial({ color: 0xb4c6fc, flatShading: true })
@@ -24,7 +28,14 @@ export function Truck() {
 
   const cargo = new THREE.Mesh(
     new THREE.BoxGeometry(75 * zoom, 35 * zoom, 40 * zoom),
-    new THREE.MeshPhongMaterial({ color: 0xb4c6fc, flatShading: true })
+    [
+      new THREE.MeshPhongMaterial({ color: 0xff0000, flatShading: true }), // back
+      new THREE.MeshPhongMaterial({ color: 0xff0000, flatShading: true }), // front
+      new THREE.MeshPhongMaterial({ map: texture_right, flatShading: true }), //right
+      new THREE.MeshPhongMaterial({ map: texture_left, flatShading: true }), //left
+      new THREE.MeshPhongMaterial({ color: 0xff0000, flatShading: true }), // top
+      new THREE.MeshPhongMaterial({ color: 0xff0000, flatShading: true }), // bottom
+    ]
   );
   cargo.position.x = 15 * zoom;
   cargo.position.z = 30 * zoom;
