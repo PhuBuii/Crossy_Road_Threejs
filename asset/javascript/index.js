@@ -361,6 +361,7 @@ document.querySelector("#retry").addEventListener("click", () => {
   lanes.forEach((lane) => scene.remove(lane.mesh));
   initaliseValues();
   endDOM.style.visibility = "hidden";
+  checkbox.style.visibility = "visible";
   controlBtns.style.visibility = "visible";
   window.addEventListener("keydown", handleKeyDown);
   window.addEventListener("keyup", handleKeyUp);
@@ -467,7 +468,27 @@ let keyState = {};
 const handleKeyDown = (event) => {
   keyState[event.keyCode] = false;
 };
-
+const resetGame = (event) => {
+  if (event.key == "R" || event.key == "r") {
+    lanes.forEach((lane) => scene.remove(lane.mesh));
+    initaliseValues();
+    endDOM.style.visibility = "hidden";
+    checkbox.style.visibility = "visible";
+    controlBtns.style.visibility = "visible";
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    document.addEventListener("touchstart", handleTouchStart, {
+      passive: false,
+    });
+    document.addEventListener("touchmove", handleTouchMove, {
+      passive: false,
+    });
+    counterDOM.innerHTML = 0;
+    scene.remove(player);
+    player = new Chicken();
+    scene.add(player);
+  }
+};
 const handleKeyUp = (event) => {
   if (keyState[event.keyCode] == false) {
     if (event.keyCode == "38") {
@@ -498,24 +519,6 @@ const handleKeyUp = (event) => {
         player.rotation.z = -1.55;
       }
       turn = 3;
-    }
-    if (event.key == "R" || event.key == "r") {
-      lanes.forEach((lane) => scene.remove(lane.mesh));
-      initaliseValues();
-      endDOM.style.visibility = "hidden";
-      controlBtns.style.visibility = "visible";
-      window.addEventListener("keydown", handleKeyDown);
-      window.addEventListener("keyup", handleKeyUp);
-      document.addEventListener("touchstart", handleTouchStart, {
-        passive: false,
-      });
-      document.addEventListener("touchmove", handleTouchMove, {
-        passive: false,
-      });
-      counterDOM.innerHTML = 0;
-      scene.remove(player);
-      player = new Chicken();
-      scene.add(player);
     }
   }
   keyState[event.keyCode] = true;
@@ -752,6 +755,8 @@ function animate(timestamp) {
         document.removeEventListener("touchmove", handleTouchMove, {
           passive: false,
         });
+        document.addEventListener("keydown", resetGame);
+        checkbox.style.visibility = "hidden";
         const playerPosition = player.position.clone(); // Lưu trữ vị trí hiện tại của player
 
         scene.remove(player);
