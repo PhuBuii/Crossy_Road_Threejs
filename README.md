@@ -35,6 +35,7 @@
 * **Tên đồ án:** Crossy Road with ThreeJS
 * **Ngôn ngữ lập trình:** HTML, CSS, JavaScript
 ## [CÁCH ĐIỀU KHIỂN](#top)
+Bạn có thể dùng bàn phím hoặc nút hiện trên màn hình
 | Key                         | Command              |
 |-----------------------------|----------------------|
 | <kbd>←</kbd>                | Walk left            |
@@ -42,6 +43,14 @@
 | <kbd>↑</kbd>                | Go up                |
 | <kbd>↓</kbd>                | Go down              |
 | <kbd>r</kbd>                | Restart game         |
+
+Nếu bạn sử dụng điện thoại bạn có thể thao tác vuốt.
+| Scroll                      | Command              |
+|-----------------------------|----------------------|
+| <kbd>←</kbd>                | Walk left            |
+| <kbd>→</kbd>                | Walk right           |
+| <kbd>↑</kbd>                | Go up                |
+| <kbd>↓</kbd>                | Go down              |
 ## [CÁC BƯỚC CẦN THIẾT](#top)
 Sử dụng Visual Code để có thể khởi chạy project.
 
