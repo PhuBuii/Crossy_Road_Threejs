@@ -11,7 +11,7 @@
 
 [![Status](https://img.shields.io/badge/status-done-pink?style=flat-square)](https://github.com/pahopu/CS336_ImageSearch_Project2)
 [![GitHub contributors](https://img.shields.io/github/contributors/PhuBuii/Crossy_Road_Threejs?style=flat-square)](https://github.com/PhuBuii/Crossy_Road_Threejs/graphs/contributors)
-[![Status](https://img.shields.io/badge/language1-python-blue?style=flat-square)](https://github.com/PhuBuii/Crossy_Road_Threejs)
+[![Status](https://img.shields.io/badge/language1-javascript-blue?style=flat-square)](https://github.com/PhuBuii/Crossy_Road_Threejs)
 [![Status](https://img.shields.io/badge/language2-html-orange?style=flat-square)](https://github.com/PhuBuii/Crossy_Road_Threejs)
 [![Status](https://img.shields.io/badge/language3-css-purple?style=flat-square)](https://github.com/PhuBuii/Crossy_Road_Threejs)
 
