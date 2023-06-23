@@ -1,4 +1,5 @@
 import * as THREE from "../../node_modules/three/build/three.module.js";
+import { TextureLoader } from "../../node_modules/three/build/three.module.js";
 import { zoom } from "../modules/modules.js";
 
 const chickenSize = 15;
@@ -6,7 +7,7 @@ const eggSize = 15;
 export function Egg() {
   const egg = new THREE.Group();
 
-  const textureLoader = new THREE.TextureLoader();
+  const textureLoader = new TextureLoader();
   const texture = textureLoader.load("../../../asset/egg.webp"); // Đường dẫn tới tệp texture
   const body = new THREE.Mesh(
     new THREE.BoxGeometry(eggSize * zoom, eggSize * zoom, 20 * zoom),
