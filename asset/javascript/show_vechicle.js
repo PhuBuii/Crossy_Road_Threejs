@@ -5,11 +5,12 @@ import { Truck } from "./vechicles/truck.js";
 import { Taxi } from "./vechicles/taxi.js";
 import { Bus } from "./vechicles/bus.js";
 import { Ambulance } from "./vechicles/ambulance.js";
+import { IceCream } from "./vechicles/icecream.js";
 import { Egg, Chicken, Crash_Chicken } from "./players/player.js";
 
 const scene = new THREE.Scene();
 
-const vechicle = new Ambulance();
+const vechicle = new IceCream();
 console.log(vechicle)
 scene.add(vechicle);
 
