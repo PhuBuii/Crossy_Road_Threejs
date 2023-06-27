@@ -1,15 +1,19 @@
 import * as THREE from "../node_modules/three/build/three.module.js";
 // import { Coin, Grass, Road, Tree } from "./modules/objects.js";
 import { Car } from "./vechicles/car.js";
+import { Car1 } from "./vechicles/car1.js";
+import { UIT } from "./vechicles/UIT.js";
+import { Limousine } from "./vechicles/limousine.js";
 import { Truck } from "./vechicles/truck.js";
 import { Taxi } from "./vechicles/taxi.js";
 import { Bus } from "./vechicles/bus.js";
 import { Ambulance } from "./vechicles/ambulance.js";
 import { Egg, Chicken, Crash_Chicken } from "./players/player.js";
+import {Coin} from "./modules/objects.js"
 
 const scene = new THREE.Scene();
 
-const vechicle = new Ambulance();
+const vechicle = new Coin();
 console.log(vechicle)
 scene.add(vechicle);
 

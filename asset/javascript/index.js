@@ -1,5 +1,8 @@
 import * as THREE from "../node_modules/three/build/three.module.js";
 import { Car } from "./vechicles/car.js";
+import { Car1 } from "./vechicles/car1.js";
+import { Limousine } from "./vechicles/limousine.js";
+import { UIT } from "./vechicles/UIT.js";
 import { Truck } from "./vechicles/truck.js";
 import { Ambulance } from "./vechicles/ambulance.js";
 import { Bus } from "./vechicles/bus.js";
@@ -120,7 +123,7 @@ backLight.position.set(200, 200, 50);
 backLight.castShadow = true;
 scene.add(backLight);
 
-const laneTypes = ["bus", "car", "truck", "forest", "coin", "taxi", "ambulance"];
+const laneTypes = ["bus", "car", "truck", "forest", "coin", "taxi", "ambulance", "car1", "limousine", "UIT"];
 const laneSpeeds = [2, 2.5, 3];
 
 const treeHeights = [20, 45, 60];
@@ -344,6 +347,75 @@ function Lane(index) {
         occupiedPositions.add(position);
         vechicle.position.x =
           (position * positionWidth * 3 + positionWidth / 2) * zoom -
+          (boardWidth * zoom) / 2;
+        if (!this.direction) vechicle.rotation.z = Math.PI;
+        this.mesh.add(vechicle);
+        return vechicle;
+      });
+
+      this.speed = laneSpeeds[Math.floor(Math.random() * laneSpeeds.length)];
+      break;
+    }
+    case "car1": {
+      this.mesh = new Road();
+      this.direction = Math.random() >= 0.5;
+
+      const occupiedPositions = new Set();
+      this.vechicles = [1].map(() => {
+        const vechicle = new Car1();
+        let position;
+        do {
+          position = Math.floor((Math.random() * columns) / 2);
+        } while (occupiedPositions.has(position));
+        occupiedPositions.add(position);
+        vechicle.position.x =
+          (position * positionWidth * 2 + positionWidth / 2) * zoom -
+          (boardWidth * zoom) / 2;
+        if (!this.direction) vechicle.rotation.z = Math.PI;
+        this.mesh.add(vechicle);
+        return vechicle;
+      });
+
+      this.speed = laneSpeeds[Math.floor(Math.random() * laneSpeeds.length)];
+      break;
+    }
+    case "limousine": {
+      this.mesh = new Road();
+      this.direction = Math.random() >= 0.5;
+
+      const occupiedPositions = new Set();
+      this.vechicles = [1].map(() => {
+        const vechicle = new Limousine();
+        let position;
+        do {
+          position = Math.floor((Math.random() * columns) / 2);
+        } while (occupiedPositions.has(position));
+        occupiedPositions.add(position);
+        vechicle.position.x =
+          (position * positionWidth * 2 + positionWidth / 2) * zoom -
+          (boardWidth * zoom) / 2;
+        if (!this.direction) vechicle.rotation.z = Math.PI;
+        this.mesh.add(vechicle);
+        return vechicle;
+      });
+
+      this.speed = laneSpeeds[Math.floor(Math.random() * laneSpeeds.length)];
+      break;
+    }
+    case "UIT": {
+      this.mesh = new Road();
+      this.direction = Math.random() >= 0.5;
+
+      const occupiedPositions = new Set();
+      this.vechicles = [1].map(() => {
+        const vechicle = new UIT();
+        let position;
+        do {
+          position = Math.floor((Math.random() * columns) / 2);
+        } while (occupiedPositions.has(position));
+        occupiedPositions.add(position);
+        vechicle.position.x =
+          (position * positionWidth * 2 + positionWidth / 2) * zoom -
           (boardWidth * zoom) / 2;
         if (!this.direction) vechicle.rotation.z = Math.PI;
         this.mesh.add(vechicle);
@@ -616,7 +688,7 @@ function animate(timestamp) {
 
   // Animate cars and trucks moving on the lane
   lanes.forEach((lane) => {
-    if (lane.type === "car" || lane.type === "truck" || lane.type === "bus" || lane.type === "taxi" || lane.type === "ambulance") {
+    if (lane.type === "car" || lane.type === "truck" || lane.type === "bus" || lane.type === "taxi" || lane.type === "ambulance" || lane.type === "car1" || lane.type === "limousine" || lane.type === "UIT") {
       const aBitBeforeTheBeginingOfLane =
         (-boardWidth * zoom) / 2 - positionWidth * 2 * zoom;
       const aBitAfterTheEndOFLane =
@@ -733,11 +805,14 @@ function animate(timestamp) {
     lanes[currentLane].type === "bus" ||
     lanes[currentLane].type === "truck" ||
     lanes[currentLane].type === "taxi" ||
-    lanes[currentLane].type === "ambulance" 
+    lanes[currentLane].type === "ambulance"||
+    lanes[currentLane].type === "car1" ||
+    lanes[currentLane].type === "limousine" ||
+    lanes[currentLane].type === "UIT" 
   ) {
     const chickenMinX = player.position.x - (chickenSize * zoom) / 2;
     const chickenMaxX = player.position.x + (chickenSize * zoom) / 2;
-    const vechicleLength = { bus: 80, car: 60, truck: 105, taxi: 60, ambulance: 80 }[
+    const vechicleLength = { bus: 80, car: 60, truck: 105, taxi: 60, ambulance: 80, car1: 60, limousine: 70, UIT: 80 }[
       lanes[currentLane].type
     ];
 
